@@ -1,0 +1,59 @@
+---
+title: "Statistical Inference Project Part2"
+author: "Zirui Wang"
+date: "4/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Basic Inferential Data Analysis 
+Analyze the ToothGrowth data in the R datasets package.
+
+### Load the ToothGrowth data and perform some basic exploratory data analyses
+```{r}
+library(datasets)
+data(ToothGrowth)
+head(ToothGrowth)
+boxplot(len~supp*dose, data=ToothGrowth, col=(c("gold","darkgreen")), main="Tooth Growth", xlab="Suppliment and Dose")
+```
+
+### Provide a basic summary of the data.
+```{r}
+summary(ToothGrowth)
+```
+
+### Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose.
+**95% confidence interval of mean difference between supplement OJ and VC**
+```{r}
+t.test(len ~ supp, paired=TRUE, var.equal=FALSE, data=ToothGrowth, conf.level=0.95)
+```
+**Hypothesis test H0: mu0.5=mu1 in same supp VC**
+```{r}
+len_0.5 <-ToothGrowth[ToothGrowth$dose == 0.5, ][ToothGrowth[ToothGrowth$dose == 0.5, ]$supp=='VC', ]$len
+len_1 <-ToothGrowth[ToothGrowth$dose == 1, ][ToothGrowth[ToothGrowth$dose == 1, ]$supp=='VC', ]$len
+t.test(len_0.5-len_1)
+```
+**Hypothesis test H0: mu1=mu2 in same supp VC**
+```{r}
+len_1 <-ToothGrowth[ToothGrowth$dose == 1, ][ToothGrowth[ToothGrowth$dose == 1, ]$supp=='VC', ]$len
+len_2 <-ToothGrowth[ToothGrowth$dose == 2, ][ToothGrowth[ToothGrowth$dose == 2, ]$supp=='VC', ]$len
+t.test(len_1-len_2)
+```
+**Hypothesis test H0: mu0.5=mu1 in same supp OJ**
+```{r}
+len_0.5 <-ToothGrowth[ToothGrowth$dose == 0.5, ][ToothGrowth[ToothGrowth$dose == 0.5, ]$supp=='OJ', ]$len
+len_1 <-ToothGrowth[ToothGrowth$dose == 1, ][ToothGrowth[ToothGrowth$dose == 1, ]$supp=='OJ', ]$len
+t.test(len_0.5-len_1)
+```
+**Hypothesis test H0: mu1=mu2 in same supp OJ**
+```{r}
+len_1 <-ToothGrowth[ToothGrowth$dose == 1, ][ToothGrowth[ToothGrowth$dose == 1, ]$supp=='OJ', ]$len
+len_2 <-ToothGrowth[ToothGrowth$dose == 2, ][ToothGrowth[ToothGrowth$dose == 2, ]$supp=='OJ', ]$len
+t.test(len_1-len_2)
+```
+
+### Conclusions and the assumptions.
+The positive 95% confidence interval of paired T test for supplement OJ and VC suggests that the tooth growth length is in fact influenced by different supplement OJ and VC. Under the same supplement VC, the mean differences between dose 0.5, 1 and 2 are not equal to 0. This statement is supported by the small p-values(alpha=0.05), which lead to reject H0 and in favor of Ha. Under the same supplement OJ between dose 1 and 2, p-value (0.08384) infers that there is not enough statistical evidence to reject H0. Therefore, the effect on tooth growth between dose 1 and 2 under supplement OJ is unclear. 
