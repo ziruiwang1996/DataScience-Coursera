@@ -1,0 +1,25 @@
+---
+title: "Michigan State University Campus Attraction Spots"
+author: "Zirui Wang"
+date: "5/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, comment=''}
+library(leaflet)
+library(dplyr)
+loc <- data.frame(name = c('Main Library', 'Engineering Building', 'Spartan Stadium', 'Breslin Center', 'Eli Broad Museum', 'Horticulture Gardens', 'Spartan Statue', 'The Rock', 'Beaumont Tower', 'MSU Union', 'Botanical Garden', 'Alumni Memorial Chapel', 'Abrams Planetarium', 'Visitor Center', 'Wharton Art Center'),
+                  col = c('green', 'green', 'red', 'green', 'red', 'yellow', 'red', 'green', 'red', 'green', 'yellow', 'yellow', 'red', 'green', 'green'),
+                  lat = c(42.73105784830803, 42.72498836396796, 42.72825966466618, 42.72840806094629, 42.73283469146059, 42.72113744986697, 42.73120977820715, 42.72818891676889, 42.73207698631502, 42.73422832341419, 42.73131972627148, 42.72861080059443, 42.725674540396746, 42.71986712832271, 42.72391572147091),
+                  lng = c(-84.48242716105463, -84.48132395152943, -84.48485127419426, -84.49239775745977,  -84.47665219121242, -84.47404879281943, -84.48752261033522, -84.4775760158095, -84.48226897286271, -84.48286081330504, -84.48490690461692, -84.47403113706737, -84.47628108090393, -84.49062825594991, -84.47070964930725),
+                  stringsAsFactors = FALSE)
+loc %>%
+  leaflet() %>%
+  addTiles() %>%
+  addCircleMarkers(popup=loc$name, color=loc$col) %>%
+  addLegend(labels = c('Very popular', 'Popular', 'Moderate popular'), colors = c('red', 'yellow', 'green'))
+```
